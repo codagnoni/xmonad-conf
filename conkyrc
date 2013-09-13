@@ -1,0 +1,35 @@
+short_units yes
+background yes
+out_to_console yes
+out_to_x no
+update_interval 1
+align top_right
+pad_percents 1
+double_buffer yes
+
+lua_load ~/.xmonad/conky/scripts/conky_lua_scripts.lua
+
+TEXT
+^fg()
+${if_mpd_playing} \
+^i(/home/joao.codagnoni/.xmonad/dzen2/bitmaps/mpd.xbm) \
+${lua_parse format %s ${mpd_smart 60}} \
+${lua_parse format %s ${mpd_elapsed}}/${lua_parse format %-99s ${mpd_length}} \
+${endif} \
+\
+^i(/home/joao.codagnoni/.xmonad/dzen2/bitmaps/volume.xbm) \
+${exec amixer get Master | egrep -o "[0-9]+%" | head -1 | egrep -o "[0-9]*"}% \
+^i(/home/joao.codagnoni/.xmonad/dzen2/bitmaps/cpu.xbm) \
+${lua_parse format %3.0f ${cpu}}% \
+^i(/home/joao.codagnoni/.xmonad/dzen2/bitmaps/mem.xbm) \
+${lua_parse format %3.0f ${memperc}}% \
+${if_existing /proc/net/route eth1} \
+^i(/home/joao.codagnoni/.xmonad/dzen2/bitmaps/net_wired.xbm) \
+^i(/home/joao.codagnoni/.xmonad/dzen2/bitmaps/net_down_03.xbm) \
+${lua_parse format %-6s ${downspeed eth1}} \
+^i(/home/joao.codagnoni/.xmonad/dzen2/bitmaps/net_up_03.xbm) \
+${lua_parse format %-6s ${upspeed eth1}} \
+${endif} \
+^i(/home/joao.codagnoni/.xmonad/dzen2/bitmaps/clock.xbm) \
+${time %d/%m/%Y} - \
+${time %R}  
