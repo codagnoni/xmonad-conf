@@ -10,6 +10,9 @@
 # GENERAL INITIALIZATION
 #
 
+# Load up mate setting daemon, so things get much prettier
+mate-settings-daemon &
+
 # Identify the home of our gtkrc file, important for setting styles of 
 # gtk-based applications
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
@@ -59,19 +62,19 @@ nitrogen --restore &
 #
 # STARTUP ICON TRAY
 #
-trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand false --width 180 --widthtype pixel --transparent true --tint 0x222222 --alpha 0 --height 24 &
-
+#trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand false --width 180 --widthtype pixel --transparent true --tint 0x222222 --alpha 0 --height 24 &
+./start-trayer &
 
 # Run the gnome-keyring-daemon to avoid issues you otherwise may encounter
 # when using gnome applications which expect access to the keyring, such
 # as Empathy. This prevents prompts you may otherwise get for invalid
 # certificates and the like.
-gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
+mate-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
 
 #xscreensaver -no-splash &
-gnome-screensaver &
+mate-screensaver &
 
-empathy &
+pidgin &
 thunderbird &
 
 # Now, finally, start xmonad
