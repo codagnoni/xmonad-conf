@@ -336,8 +336,8 @@ myLogHook h = dynamicLogWithPP $ myDzenPP { ppOutput = hPutStrLn h }
 myBitmapsDir = "/home/joao.codagnoni/.xmonad/dzen2/bitmaps"
 
 -- Left bar is 1000px wide, right one 500, rest is taken by trayer
-myDzenLeftBar = "dzen2 -x '0' -w '1920' -ta 'l' -xs 1" ++ myDzenStyle
-myDzenRightBar  = "conky -c ~/.xmonad/conkyrc | dzen2 -x '0' -w '1920' -ta 'r' -xs 2" ++ myDzenStyle
+myDzenLeftBar = "dzen2 -x '0' -w '983' -ta 'l'" ++ myDzenStyle
+myDzenRightBar  = "conky -c ~/.xmonad/conkyrc | dzen2 -x '983' -w '383' -ta 'r'" ++ myDzenStyle
 
 -- Bar style 24px high and colors
 myDzenStyle  = " -h '24' -y '0' -fg '#cccccc' -bg '#222222' -fn 'Ubuntu Mono:size=12'"
