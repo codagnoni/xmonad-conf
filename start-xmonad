@@ -46,7 +46,7 @@ xcompmgr -n &
 # If we find that a screen is connected via DVI, activate it and position it
 # to the left of the primary screen.
 #xrandr | grep 'DP-1 connected' | ifne xrandr --output DP-1 --auto --right-of LVDS-1
-xrandr --output VGA-0 --mode 1920x1080 --pos 1920x0 --rotate normal --output DVI-I-1 --mode 1920x1080 --pos 0x0 --rotate normal --output DVI-I-0 --off --output HDMI-0 --off
+xrandr --output HDMI1 --off --output VIRTUAL1 --off --output DP1 --mode 1920x1080 --pos 1920x0 --rotate normal --output VGA1 --mode 1920x1080 --pos 0x0 --rotate normal
 
 #
 # LOAD SCREEN BACKGROUNDS
@@ -59,7 +59,7 @@ nitrogen --restore &
 #
 # STARTUP ICON TRAY
 #
-trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand false --width 180 --widthtype pixel --transparent true --tint 0x222222 --alpha 0 --height 24 &
+#trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand false --width 180 --widthtype pixel --transparent true --tint 0x222222 --alpha 0 --height 24 &
 
 
 # Run the gnome-keyring-daemon to avoid issues you otherwise may encounter
@@ -72,8 +72,7 @@ gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
 gnome-screensaver &
 
 empathy &
-thunderbird &
 
 # Now, finally, start xmonad
-/home/joao.codagnoni/.cabal/bin/xmonad
+xmonad
 

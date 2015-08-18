@@ -42,11 +42,12 @@ import Data.Ratio ((%))
 -}
 
 myModMask            = mod4Mask       -- changes the mod key to "super"
-myFocusedBorderColor = "#555555"      -- color of focused border
+myFocusedBorderColor = "#cccccc"      -- color of focused border
 myNormalBorderColor  = "#000000"      -- color of inactive border
 myBorderWidth        = 1              -- width of border around windows
 myTerminal           = "mate-terminal"   -- which terminal software to use
 myIMRosterTitle      = "Contact List" -- title of roster on IM workspace
+myZoiperTitle        = "Zoiper" -- title of roster on IM workspace
 
 
 {-
@@ -88,10 +89,10 @@ myUrgentWSRight = "}"
 
 myWorkspaces =
   [
-    "7:",  "8:", "9:Gimp",
-    "4:Web",  "5:Chat", "6:File",
     "1:Dev",   "2:Term", "3:Mail",
-    "Extr0",    "Extr1", "Extr2"
+    "4:Web",  "5:Chat", "6:File",
+    "7:",  "8:", "9:Gimp",
+    "0:Comm", "Extr0", "Extr1"
   ]
 
 startupWorkspace = "1:Dev"  -- which workspace do you want to be on after launch?
@@ -159,6 +160,9 @@ defaultLayouts = smartBorders(avoidStruts(
 -- will want to modify that variable.
 chatLayout = avoidStruts(withIM (1%7) (Title myIMRosterTitle) Grid)
 
+
+commLayout = avoidStruts(withIM (1%6) (Title myZoiperTitle) Grid)
+
 -- The GIMP layout uses the ThreeColMid layout. The traditional GIMP
 -- floating panels approach is a bit of a challenge to handle with xmonad;
 -- I find the best solution is to make the image you are working on the
@@ -171,6 +175,7 @@ gimpLayout = smartBorders(avoidStruts(ThreeColMid 1 (3/100) (3/4)))
 -- layouts.
 myLayouts =
   onWorkspace "5:Chat" chatLayout
+  $ onWorkspace "0:Comm" commLayout
   $ onWorkspace "9:Gimp" gimpLayout
   $ defaultLayouts
 
@@ -204,12 +209,15 @@ myKeyBindings =
     ((myModMask, xK_b), sendMessage ToggleStruts)
     , ((myModMask, xK_a), sendMessage MirrorShrink)
     , ((myModMask, xK_z), sendMessage MirrorExpand)
-    , ((myModMask, xK_p), spawn "synapse")
+    , ((myModMask, xK_p), spawn "gmrun")
     , ((myModMask, xK_u), focusUrgent)
     , ((0, 0x1008FF12), spawn "mpc toggle")
     , ((0, 0x1008FF11), spawn "amixer -q set Master 1%-")
     , ((0, 0x1008FF13), spawn "amixer -q set Master 1%+")
+    , ((0, 0x1008ff1d), spawn "gnome-calculator")
+    , ((myModMask, xK_F12), spawn "gnome-screensaver-command --lock")
   ]
+
 
 
 {-
@@ -261,11 +269,12 @@ myManagementHooks = [
   resource =? "synapse" --> doIgnore
   , resource =? "stalonetray" --> doIgnore
   , className =? "rdesktop" --> doFloat
-  , (className =? "Gvim") --> doF (W.shift "1:Dev")
+  , (className =? "Eclipse") --> doF (W.shift "1:Dev")
   , (className =? "Empathy") --> doF (W.shift "5:Chat")
   , (className =? "Pidgin") --> doF (W.shift "5:Chat")
   , (className =? "Gimp-2.8") --> doF (W.shift "9:Gnome")
   , (className =? "Thunderbird") --> doF (W.shift "3:Mail")
+  , (className =? "Zoiper") --> doF (W.shift "0:Comm")
   ]
 
 
@@ -294,9 +303,9 @@ numPadKeys =
 
 numKeys =
   [
-    xK_7, xK_8, xK_9
+    xK_1, xK_2, xK_3
     , xK_4, xK_5, xK_6
-    , xK_1, xK_2, xK_3
+    , xK_7, xK_8, xK_9
     , xK_0, xK_minus, xK_equal
   ]
 
@@ -336,11 +345,11 @@ myLogHook h = dynamicLogWithPP $ myDzenPP { ppOutput = hPutStrLn h }
 myBitmapsDir = "/home/joao.codagnoni/.xmonad/dzen2/bitmaps"
 
 -- Left bar is 1000px wide, right one 500, rest is taken by trayer
-myDzenLeftBar = "dzen2 -x '0' -w '1920' -ta 'l' -xs 1" ++ myDzenStyle
-myDzenRightBar  = "conky -c ~/.xmonad/conkyrc | dzen2 -x '0' -w '1920' -ta 'r' -xs 2" ++ myDzenStyle
+myDzenLeftBar = "dzen2 -x '0' -w '1420' -ta 'l' -xs 1" ++ myDzenStyle
+myDzenRightBar  = "conky -c ~/.xmonad/conkyrc | dzen2 -x '1420' -w '500' -ta 'r' -xs 1" ++ myDzenStyle
 
 -- Bar style 24px high and colors
-myDzenStyle  = " -h '24' -y '0' -fg '#cccccc' -bg '#222222' -fn 'Ubuntu Mono:size=12'"
+myDzenStyle  = " -h '20' -y '0' -fg '#cccccc' -bg '#000000' -fn 'Ubuntu Mono:size=8'"
 
 -- Very plain formatting, non-empty workspaces are highlighted,
 -- urgent workspaces (e.g. active IM window) are highlighted in red
